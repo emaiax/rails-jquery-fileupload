@@ -1,0 +1,20 @@
+.page-header
+  -# = link_to t('.new', :default => t("helpers.links.new")), [:new, :product], :class => "btn btn-primary"
+
+%table.table.table-condensed.table-striped
+  %thead
+    %tr
+      %th= t ".title", :default => t("activerecord.attributes.common.title")
+      %th= t ".created_at", :default => t("activerecord.attributes.common.created_at")
+      %th= t ".updated_at", :default => t("activerecord.attributes.common.updated_at")
+      %th= t ".actions", :default => t("helpers.actions")
+      
+  %tbody
+    - @products.each do |product|
+      %tr
+        %td= product.title
+        %td= product.created_at
+        %td= product.updated_at
+        %td
+          = link_to t('.edit', :default => t("helpers.links.edit")), [:edit, product], :class => "btn btn-small"
+          = link_to t('.destroy', :default => t("helpers.links.destroy")), [product], :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Tem certeza?')) }, :method => :delete, :class => "btn btn-small btn-danger"
