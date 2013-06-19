@@ -23,3 +23,8 @@ group :assets do
   gem 'bootstrap-sass'
   gem 'jquery-fileupload-rails'
 end
+
+group :development do
+  gem "meta_request"
+  gem "quiet_assets"
+end
