@@ -1,6 +1,12 @@
 = simple_form_for @product do |f|
+  = f.input :token
   = f.input :title
+
+  = f.simple_fields_for :pictures do |p|
+    = p.file_field :image
 
   .form-actions
     = f.submit nil, :class => 'btn btn-primary'
     = link_to t('.cancel', :default => t("helpers.links.cancel")), [:products], :class => 'btn'
+
+= render :template => "pictures/index"

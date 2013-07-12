@@ -1,7 +1,7 @@
 class Picture < ActiveRecord::Base
-  include Rails.application.routes.url_helpers
+  belongs_to :product
+  attr_accessible :image, :token
 
-  attr_accessible :image
   mount_uploader :image, ImageUploader
 
   def to_jq_upload
@@ -10,7 +10,7 @@ class Picture < ActiveRecord::Base
       "size" => image.size,
       "url" => image.url,
       "thumbnail_url" => image.url(:thumb),
-      "delete_url" => picture_path(self),
+      "delete_url" => id,
       "delete_type" => "delete"
     }
   end

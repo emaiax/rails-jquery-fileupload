@@ -25,6 +25,5 @@ group :assets do
 end
 
 group :development do
-  gem "meta_request"
   gem "quiet_assets"
 end

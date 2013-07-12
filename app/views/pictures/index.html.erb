@@ -1,6 +1,7 @@
 <div class="container">
   <h2>Upload file</h2>
-  <%= form_for Picture.new, :html => { :multipart => true, :id => "fileupload"  } do |f| %>
+  <%= form_for @picture, :html => { :multipart => true, :id => "fileupload"  } do |f| %>
+    <%= f.text_field :token, value: @product.token %>
     <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
     <div class="row fileupload-buttonbar">
       <div class="span7">
@@ -35,7 +36,7 @@
     <div class="fileupload-loading"></div>
     <br>
     <!-- The table listing the files available for upload/download -->
-    <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+    <table class="table table-striped"><tbody class="files" data-toggle="modal-product" data-target="#modal-product"></tbody>
     </table>
   <% end %>
 
@@ -93,16 +94,16 @@
         <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
         {% } else { %}
         <td class="preview">{% if (file.thumbnail_url) { %}
-          <a href="{%=file.url%}" title="{%=file.name%}" rel="gallery" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
+          <a href="{%=file.url%}" title="{%=file.name%}" rel="product" download="{%=file.name%}"><img src="{%=file.thumbnail_url%}"></a>
           {% } %}</td>
         <td class="name">
-          <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
+          <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'product'%}" download="{%=file.name%}">{%=file.name%}</a>
         </td>
         <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
         <td colspan="2"></td>
         {% } %}
       <td class="delete">
-        <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=file.delete_url%}">
+        <button class="btn btn-danger" data-type="{%=file.delete_type%}" data-url="{%=$('#fileupload').attr('action').concat('/' + file.delete_url)%}">
           <i class="icon-trash icon-white"></i>
           <span>{%=locale.fileupload.destroy%}</span>
         </button>
@@ -115,12 +116,11 @@
 <script type="text/javascript" charset="utf-8">
   $(function () {
       // Initialize the jQuery File Upload widget:
-      $('#fileupload').fileupload({
-        paramName: 'picture[image]'
-        });
+      $('#fileupload').fileupload();
       // 
       // Load existing files:
-      $.getJSON($('#fileupload').prop('action'), function (files) {
+      url = $('#fileupload').prop('action') + '?product_token=' + $('#fileupload').find('#picture_token').val();
+      $.getJSON(url, function (files) {
         var fu = $('#fileupload').data('blueimpFileupload'), 
           template;
         fu._adjustMaxNumberOfFiles(-files.length);
@@ -132,6 +132,5 @@
         template.addClass('in');
         $('#loading').remove();
       });
-
   });
 </script>
