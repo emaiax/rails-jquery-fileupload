@@ -1,12 +1,16 @@
-= simple_form_for @product do |f|
-  = f.input :token
-  = f.input :title
+%ul.nav.nav-tabs
+  %li.active= link_to "Informações", "#tab1", :"data-toggle" => "tab"
+  %li= link_to "Galeria", "#tab2", :"data-toggle" => "tab"
 
-  = f.simple_fields_for :pictures do |p|
-    = p.file_field :image
+.tab-content
+  #tab1.tab-pane.active
+    = simple_form_for @product do |f|
+      = f.input :token, :as => :hidden
+      = f.input :title
 
-  .form-actions
-    = f.submit nil, :class => 'btn btn-primary'
-    = link_to t('.cancel', :default => t("helpers.links.cancel")), [:products], :class => 'btn'
+      .form-actions
+        = f.submit nil, :class => 'btn btn-primary'
+        = link_to t('.cancel', :default => t("helpers.links.cancel")), [:products], :class => 'btn'
 
-= render :template => "pictures/index"
+  #tab2.tab-pane
+    = render :template => "pictures/index"
